@@ -1,4 +1,4 @@
-define(['StaticEntity', 'Tile', 'Assets', 'HealthBar', 'Rectangle', 'GameOverState', 'State'], function(StaticEntity, Tile, Assets, HealthBar, Rectangle, GameOverState, State){
+define(['StaticEntity', 'Assets', 'HealthBar', 'Rectangle', 'State'], function(StaticEntity, Assets, HealthBar, Rectangle, State){
 
 	var assets = Assets.getAssets("castle"), deathCleanup = true, exploderCount = 0;
 
@@ -36,8 +36,8 @@ define(['StaticEntity', 'Tile', 'Assets', 'HealthBar', 'Rectangle', 'GameOverSta
 					this.dead = 666;
 					this.handler.getWorld().getEntityManager().removeEntity(this);
 					this.handler.getWorld().getSpatialGrid().remove(new Rectangle(this.x + this.bounds.x, this.y + this.bounds.y, this.bounds.width, this.bounds.height), this);
-					gameOverState = new GameOverState(this.handler);
-					State.setState(gameOverState);
+					// gameOverState = new GameOverState(this.handler);
+					// State.setState(gameOverState);
 				}
 			}
 		},
@@ -56,10 +56,10 @@ define(['StaticEntity', 'Tile', 'Assets', 'HealthBar', 'Rectangle', 'GameOverSta
 				assets.animations.explode.tick();
 				this.handler.getWorld().setRoundOver(true);
 				this.handler.getWorld().getEntityManager().removeAllMonsters();
-				_g.myDrawImage(assets.animations.explode.getCurrentFrame(), 
+				_g.myDrawImage(assets.animations.explode.getCurrentFrame(),
 								this.x - this.handler.getGameCamera().getxOffset(),
-								this.y - this.handler.getGameCamera().getyOffset(), 
-								this.width, 
+								this.y - this.handler.getGameCamera().getyOffset(),
+								this.width,
 								this.height);
 			} else {
 				if (this.health > 1250)
@@ -68,10 +68,10 @@ define(['StaticEntity', 'Tile', 'Assets', 'HealthBar', 'Rectangle', 'GameOverSta
 					castleSprite = assets.sprite2;
 				if (this.health > 0 && this.health < 750)
 					castleSprite = assets.sprite3;
-					_g.myDrawImage(castleSprite, 
+					_g.myDrawImage(castleSprite,
 									this.x - this.handler.getGameCamera().getxOffset(),
-									this.y - this.handler.getGameCamera().getyOffset(), 
-									this.width, 
+									this.y - this.handler.getGameCamera().getyOffset(),
+									this.width,
 									this.height);
 				this.healthbar.render(_g);
 			}

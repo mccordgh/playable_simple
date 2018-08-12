@@ -1,4 +1,4 @@
-define(['StaticEntity', 'Tile', 'Assets'], function(StaticEntity, Tile, Assets){
+define(['StaticEntity', 'Assets'], function(StaticEntity, Assets){
 
 	var assets = Assets.getAssets("tree");
 
@@ -17,10 +17,10 @@ define(['StaticEntity', 'Tile', 'Assets'], function(StaticEntity, Tile, Assets){
 
 		},
 		render: function(_g){
-			_g.myDrawImage(assets.redwood, 
+			_g.myDrawImage(assets.redwood,
 							this.x - this.handler.getGameCamera().getxOffset(),
-							this.y - this.handler.getGameCamera().getyOffset(), 
-							this.width, 
+							this.y - this.handler.getGameCamera().getyOffset(),
+							this.width,
 							this.height);
 
 		// ****** DRAW BOUNDING BOX DON'T DELETE!!

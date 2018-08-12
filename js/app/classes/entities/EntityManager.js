@@ -1,7 +1,7 @@
-define(['Class', 'Rectangle', 'Tile'], function(Class, Rectangle, Tile){
+define(['Class', 'Rectangle'], function(Class, Rectangle){
 
 	var handler, player, entities;
-	
+
 	var EntityManager = Class.extend({
 		init: function(_handler, _player){
 			handler = _handler;
@@ -19,45 +19,45 @@ define(['Class', 'Rectangle', 'Tile'], function(Class, Rectangle, Tile){
 			//Iterate through every entity, check whether they are currently in the camera view.
 			//If they are then draw them, if not and they are a monster draw offscreen monster pointer
 			entities.forEach(function(e){
-				let checkRight = e.handler.getWidth() + e.handler.getGameCamera().getxOffset();
-				let checkBottom = e.handler.getHeight() + e.handler.getGameCamera().getyOffset();
-				let checkLeft = e.handler.getGameCamera().getxOffset() - e.width;
-				let checkTop = e.handler.getGameCamera().getyOffset() - e.height;
-				let scaleX = 0, scaleY = 0, marker;
-				let offScreen = false;
+			// 	let checkRight = e.handler.getWidth();// + e.handler.getGameCamera().getxOffset();
+			// 	let checkBottom = e.handler.getHeight();// + e.handler.getGameCamera().getyOffset();
+			// 	let checkLeft = e.handler.getGameCamera().getxOffset() - e.width;
+			// 	let checkTop = e.handler.getGameCamera().getyOffset() - e.height;
+			// 	let scaleX = 0, scaleY = 0, marker;
+			// 	let offScreen = false;
 
-				_g.font = "48px Arial";
-				_g.fillStyle = "red";
+			// 	_g.font = "48px Arial";
+			// 	_g.fillStyle = "red";
 
-				if (e.x > checkRight){
-					scaleX = e.handler.getWidth() - 55;
-					scaleY = e.y - e.handler.getGameCamera().getyOffset();
-					offScreen = true;
-					marker = ">";
-				}
-				if (e.y > checkBottom){
-					scaleX = e.x - e.handler.getGameCamera().getxOffset();
-					scaleY = e.handler.getHeight() - 25;
-					offScreen = true;
-					marker = "V";
-				}
-				if (e.x < checkLeft){
-					scaleX = 10;
-					scaleY = e.y - e.handler.getGameCamera().getyOffset();
-					offScreen = true;
-					marker = "<";
-				}
-				if (e.y < checkTop) {
-					scaleX = e.x - e.handler.getGameCamera().getxOffset();
-					scaleY = 45;
-					offScreen = true;
-					marker = "/\\";
-				}
+			// 	if (e.x > checkRight){
+			// 		scaleX = e.handler.getWidth() - 55;
+			// 		scaleY = e.y - e.handler.getGameCamera().getyOffset();
+			// 		offScreen = true;
+			// 		marker = ">";
+			// 	}
+			// 	if (e.y > checkBottom){
+			// 		scaleX = e.x - e.handler.getGameCamera().getxOffset();
+			// 		scaleY = e.handler.getHeight() - 25;
+			// 		offScreen = true;
+			// 		marker = "V";
+			// 	}
+			// 	if (e.x < checkLeft){
+			// 		scaleX = 10;
+			// 		scaleY = e.y - e.handler.getGameCamera().getyOffset();
+			// 		offScreen = true;
+			// 		marker = "<";
+			// 	}
+			// 	if (e.y < checkTop) {
+			// 		scaleX = e.x - e.handler.getGameCamera().getxOffset();
+			// 		scaleY = 45;
+			// 		offScreen = true;
+			// 		marker = "/\\";
+			// 	}
 
-				if (offScreen && e.type === 'monster')
-					_g.fillText(marker,  scaleX, scaleY);
+			// 	if (offScreen && e.type === 'monster')
+			// 		_g.fillText(marker,  scaleX, scaleY);
 
-				if (!offScreen || e.type === 'castle')
+				// if (!offScreen || e.type === 'castle')
 					e.render(_g);
 			});
 		},
@@ -87,7 +87,7 @@ define(['Class', 'Rectangle', 'Tile'], function(Class, Rectangle, Tile){
 		},
 		addEntity: function(e){
 			entities.push(e);
-			handler.getWorld().getSpatialGrid().insert(new Rectangle(e.x + e.bounds.x, e.y + e.bounds.y, e.bounds.width, e.bounds.height), e);
+			// handler.getWorld().getSpatialGrid().insert(new Rectangle(e.x + e.bounds.x, e.y + e.bounds.y, e.bounds.width, e.bounds.height), e);
 		},
 		removeEntity: function(_entity){
 			for (let i = 0; i < entities.length; i++){

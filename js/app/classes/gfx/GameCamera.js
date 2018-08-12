@@ -1,7 +1,7 @@
-define(['Class', 'Tile'], function(Class, Tile){
+define(['Class'], function(Class){
 
 	var xOffset, yOffset, handler;
-	
+
 	var GameCamera = Class.extend({
 		init: function(_handler, _xOffset, _yOffset){
 			xOffset = _xOffset;
@@ -30,13 +30,13 @@ define(['Class', 'Tile'], function(Class, Tile){
 
 				if(startY > goalY && yOffset > goalY) {
 					yOffset -= 5;
-				} 
+				}
 				if (goalY > startY && yOffset < goalY) {
 					yOffset += 5;
 				}
 				if(startX > goalX && xOffset > goalX) {
 					xOffset -= 5;
-				} 
+				}
 				if (goalX > startX && xOffset < goalX) {
 					xOffset += 5;
 				}
@@ -73,7 +73,7 @@ define(['Class', 'Tile'], function(Class, Tile){
 			} else if (yOffset > handler.getWorld().getHeight() * Tile.TILE_HEIGHT - handler.getHeight()) {
 				yOffset = handler.getWorld().getHeight() * Tile.TILE_HEIGHT - handler.getHeight();
 			}
-		}	
+		}
 
 	});
 

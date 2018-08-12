@@ -1,4 +1,4 @@
-define(['State', 'GameState', 'KeyManager', 'Assets', 'MainMenu'], function(State, GameState, KeyManager, Assets, MainMenu){
+define(['State', 'GameState', 'KeyManager', 'Assets'], function(State, GameState, KeyManager, Assets){
 
 	var fontSize = 0;
 

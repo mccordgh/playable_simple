@@ -1,4 +1,5 @@
-require(['Launcher'], function(Launcher){
+console.log('main');
 
-	var launcher = new Launcher("Defend The Castle!", 1024, 640);
+require(['Launcher'], function(Launcher){
+	var launcher = new Launcher("Playable Demo", 980, 1743);
 });

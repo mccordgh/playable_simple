@@ -1,4 +1,4 @@
-define(['Class', 'Display', 'State', 'MainMenu', 'KeyManager', 'Handler', 'GameCamera', 'SoundManager'], function(Class,Display,State,MainMenu, KeyManager, Handler, GameCamera, SoundManager){
+define(['Class', 'Display', 'State', 'KeyManager', 'Handler', 'GameCamera', 'SoundManager', 'GameState'], function(Class,Display,State, KeyManager, Handler, GameCamera, SoundManager, GameState){
 
 	var _this;
 	var running = false;
@@ -30,7 +30,7 @@ define(['Class', 'Display', 'State', 'MainMenu', 'KeyManager', 'Handler', 'GameC
 					timer += delta;
 					lastTime = now;
 				}
-			
+
 				if(timer >= timePerTick){
 					dt = timer/1000;
 					tick(dt);
@@ -41,7 +41,7 @@ define(['Class', 'Display', 'State', 'MainMenu', 'KeyManager', 'Handler', 'GameC
 			}
 
 			loop();
-	
+
 		},
 		start: function() {
 			if(running)return;
@@ -70,13 +70,13 @@ define(['Class', 'Display', 'State', 'MainMenu', 'KeyManager', 'Handler', 'GameC
 		display = new Display(title, width, height);
 		keyManager = new KeyManager();
 		g = display.getGraphics();
-		gameCamera = new GameCamera(handler, 0, 0);
-		// gameState = new GameState(handler);
-		// State.setState(gameState);
-		mainMenu = new MainMenu(handler);
-		State.setState(mainMenu);
+		// gameCamera = new GameCamera(handler, 0, 0);
+		gameState = new GameState(handler);
+		State.setState(gameState);
+		// mainMenu = new MainMenu(handler);
+		// State.setState(mainMenu);
 	}
-	
+
 	function tick(_dt) {
 		keyManager.tick();
 		if(State.getState() !== null){

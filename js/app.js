@@ -1,3 +1,5 @@
+console.log('app ');
+
 requirejs.config({
 	"baseURL":"js",
 	"paths":{
@@ -7,6 +9,7 @@ requirejs.config({
 		"Animation":"app/classes/gfx/Animation",
 		"Assets":"app/classes/gfx/Assets",
 		"Bat":"app/classes/entities/creatures/monsters/Bat",
+		"Boss":"app/classes/entities/creatures/monsters/Boss",
 		"Castle":"app/classes/entities/statics/Castle",
 		"Creature":"app/classes/entities/creatures/Creature",
 		"Display":"app/classes/display/Display",
@@ -27,6 +30,7 @@ requirejs.config({
 		"Launcher":"app/classes/Launcher",
 		"MainMenu":"app/classes/display/menus/MainMenu",
 		"MenuState":"app/classes/states/MenuState",
+		"PlayableWorld":"app/classes/worlds/PlayableWorld",
 		"Player":"app/classes/entities/creatures/Player",
 		"Portal":"app/classes/entities/statics/Portal",
 		"Rectangle":"app/classes/gfx/shapes/Rectangle",

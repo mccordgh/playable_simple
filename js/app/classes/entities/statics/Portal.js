@@ -1,4 +1,4 @@
-define(['StaticEntity', 'Tile', 'Assets', 'Bat', 'World'], function(StaticEntity, Tile, Assets, Bat, World){
+define(['StaticEntity', 'Assets', 'Bat', 'World'], function(StaticEntity, Assets, Bat, World){
 
 	var Portal = StaticEntity.extend({
 		init: function(_handler, _x, _y){
@@ -56,7 +56,7 @@ define(['StaticEntity', 'Tile', 'Assets', 'Bat', 'World'], function(StaticEntity
 						} else {
 							spawnY = this.y + (Tile.TILE_HEIGHT * 3);
 						}
-					}				
+					}
 					// Spawning a BAT!
 					this.handler.getWorld().getEntityManager().addEntity(new Bat(this.handler, spawnX, spawnY));
 					this.handler.getSoundManager().play("spawn");
@@ -67,6 +67,6 @@ define(['StaticEntity', 'Tile', 'Assets', 'Bat', 'World'], function(StaticEntity
 		}
 
 	});
-	
+
 	return Portal;
 });

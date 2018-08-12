@@ -1,7 +1,7 @@
 define(['Class', 'Assets'], function(Class, Assets){
 
-	var TILE_WIDTH = 16;
-	var TILE_HEIGHT = 16;
+	var TILE_WIDTH = 64;
+	var TILE_HEIGHT = 64;
 
 	var tiles = [];
 
