@@ -14,7 +14,7 @@ define(['Creature', 'Assets', 'HealthBar', 'Rectangle', 'BossMoving', 'BossAttac
 			this.bounds.height = this.height;
 			this.type = 'monster';
 			this.health = 80000;
-      this.damage = 125;
+      this.damage = 175;
       this.states = {
         moving: new BossMoving(this, _handler),
         attacking: new BossAttacking(this, _handler),

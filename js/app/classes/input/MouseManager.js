@@ -81,17 +81,17 @@ define(['Class'], function(Class){
 	});
 
 	window.onclick = function(e){
-    this.clickPos = { x: e.x, y: e.y};
+    // this.clickPos = { x: e.x, y: e.y};
 
-    if (
-      this.clickPos.x >= 400
-      && this.clickPos.x <= 790
-      && this.clickPos.y >= 180
-      && this.clickPos.y <= 270
-      && !handler.getWorld().youWin
-    ) {
+    // if (
+    //   this.clickPos.x >= 400
+    //   && this.clickPos.x <= 790
+    //   && this.clickPos.y >= 180
+    //   && this.clickPos.y <= 270
+    //   && !handler.getWorld().youWin
+    // ) {
       handler.getWorld().getEntityManager().getPlayer().levelUp();
-    }
+    // }
 		// keys[e.keyCode] = true;
 	};
 

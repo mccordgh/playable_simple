@@ -1,7 +1,7 @@
 define(['Creature', 'Assets', 'HealthBar', 'Rectangle', 'Moving', 'Attacking', 'Dying', 'Spawning'],
 	function(Creature, Assets, HealthBar, Rectangle, Moving, Attacking, Dying, Spawning){
 
-	var DAMAGE = 70;
+	var DAMAGE = 50;
 	var healthbar_properties = {
 		color: "#0c0",
 		bgColor: "#a00",
