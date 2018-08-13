@@ -1,20 +1,23 @@
 define(['Class', 'EntityManager', 'Player', 'SpatialGrid', 'Assets', 'Boss'], function(Class, EntityManager, Player, SpatialGrid, Assets, Boss){
 	const CURRENT_PATH = window.location.href;
 	var tree,	roundOver = false;
+	var spawnX = 50;
+	var spawnY = 400;
 
 	var PlayableWorld = Class.extend({
 		init:function(_path, _handler){
 
 			// this.tiles = [];
+			this.youWin = false;
 			this.handler = _handler;
 			_handler.setWorld(this);
-      this.entityManager = new EntityManager(_handler, new Player(_handler, 130, 550));
+      this.entityManager = new EntityManager(_handler, new Player(_handler, spawnX, spawnY));
 			this.scene = Assets.getAssets('scene');
 			this.spawn = Assets.getAssets('spawn');
 			// this.loadWorld( CURRENT_PATH + _path);
 
 			// BOSS!
-			this.entityManager.addEntity(new Boss(_handler, 690, 300));
+			this.entityManager.addEntity(new Boss(_handler, 720, 300));
 
 			// this.spatialGrid = new SpatialGrid(this.width * Tile.TILE_WIDTH, this.height * Tile.TILE_HEIGHT, 64);
 
@@ -93,24 +96,27 @@ define(['Class', 'EntityManager', 'Player', 'SpatialGrid', 'Assets', 'Boss'], fu
 			this.entityManager.tick(_dt);
 		},
 		render: function(_g){
-
-				// var xStart = parseInt(Math.max(0, this.handler.getGameCamera().getxOffset() / Tile.TILE_WIDTH));
-				// var xEnd = parseInt(Math.min(this.width, (this.handler.getGameCamera().getxOffset() + this.handler.getWidth()) / Tile.TILE_WIDTH + 1));
-				// var yStart = parseInt(Math.max(0, this.handler.getGameCamera().getyOffset() / Tile.TILE_HEIGHT));
-				// var yEnd = parseInt(Math.min(this.height, (this.handler.getGameCamera().getyOffset() + this.handler.getHeight()) / Tile.TILE_HEIGHT + 1));
-
-				// for(y = yStart; y < yEnd; y++){
-				// 	for(x = xStart; x < xEnd; x++){
-				// 		if (this.getTile(x,y) !== undefined)
-				// 			this.getTile(x, y).render(_g, x * Tile.TILE_WIDTH - this.handler.getGameCamera().getxOffset(), y * Tile.TILE_HEIGHT -  this.handler.getGameCamera().getyOffset());
-				// 	}
-				// }
-
-        // this.hud.render(_g);
         _g.myDrawImage(this.scene.model, 0, 0, this.scene.width, this.scene.height);
-        _g.myDrawImage(this.spawn.model, 30, 500, this.spawn.width, this.spawn.height);
+        _g.myDrawImage(this.spawn.model, 40, 400, this.spawn.width, this.spawn.height);
 
 				this.entityManager.render(_g);
+
+				if (this.youWin) {
+					_g.fillStyle = 'red';
+					_g.fillRect(390, 180, 400, 100);
+
+					_g.drawText({
+						border: true,
+						borderHeight: 80,
+						borderColor: 'black',
+						fillColor: 'black',
+						text: 'YOU WIN!!!!!',
+						fontSize: 48,
+						font: 'serif',
+						x: function() {return 460},
+						y: function(){return 240}
+					});
+				}
 			// tree.render(_g);
 		},
 		// getTile: function(_x, _y){

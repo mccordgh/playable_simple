@@ -1,6 +1,6 @@
 define(['Class', 'Rectangle', 'SoundManager'], function(Class, Rectangle, SoundManager){
 
-var dying, handlerRef;
+var dying, handlerRef, pewpewCount = 0;
 
 	var Entity = Class.extend({
 		init: function(_handler, _x, _y, _width, _height){
@@ -50,8 +50,37 @@ var dying, handlerRef;
 					(this.x + this.width) > e.x
 					&& this.x < (e.x + e.width)
 				) {
-					this.attacking = e.attacking = true;
+					if (this.state !== this.states.attacking) {
+						this.states.attacking.setStartX(this.x);
+						this.state = this.states.attacking;
+
+						e.states.attacking.setStartX(e.x);
+						e.state = e.states.attacking;
+					} else {
+							if (this.state === this.states.attacking) {
+								if (pewpewCount > 9) {
+								this.takeDamage(e.damage);
+								e.takeDamage(this.damage);
+								pewpewCount = 0;
+
+								if (this.health <= 0) {
+									this.state = this.states.dying;
+									e.x = e.originalX;
+									e.state = e.states.moving;
+								}
+
+								if (e.health <= 0) {
+									this.state = this.states.moving;
+									this.handler.getWorld().getEntityManager().removeEntity(e);
+									this.handler.getWorld().youWin = true;
+								}
+							} else {
+								pewpewCount++;
+							}
+						}
+					}
 				}
+
 
 				// if (this.type === 'player' && e.type === 'monster' && e.health > 0){
 				// 	// if (e.getCollisionBounds(0, 0).intersects(this.getWeaponCollisionBounds(xOffset, yOffset))){

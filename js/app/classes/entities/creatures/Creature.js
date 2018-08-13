@@ -83,14 +83,14 @@ define(['Entity', 'Rectangle'], function(Entity, Rectangle){
 		// setSpeed: function(_speed){
 			// this.speed = _speed;
 		// },
-		// takeDamage: function(_damage){
-			// if (typeof this.healthbar !== undefined && !this.dead)
-				// this.health -= _damage;
-				// this.healthbar.update();
+		takeDamage: function(_damage){
+			if (typeof this.healthbar !== undefined && !this.dead)
+				this.health -= _damage;
+				this.healthbar.update();
 			// if (this.health <= 0){
 				// this.assets.animations.death.tick();
 			// }
-		// }
+		}
 	});
 
 	Creature.DEFAULT_SPEED = DEFAULT_SPEED;

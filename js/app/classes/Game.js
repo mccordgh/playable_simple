@@ -1,4 +1,5 @@
-define(['Class', 'Display', 'State', 'KeyManager', 'Handler', 'GameCamera', 'SoundManager', 'GameState'], function(Class,Display,State, KeyManager, Handler, GameCamera, SoundManager, GameState){
+define(['Class', 'Display', 'State', 'KeyManager', 'Handler', 'GameCamera', 'SoundManager', 'GameState', 'MouseManager'],
+	function(Class,Display,State, KeyManager, Handler, GameCamera, SoundManager, GameState, MouseManager){
 
 	var _this;
 	var running = false;
@@ -69,6 +70,7 @@ define(['Class', 'Display', 'State', 'KeyManager', 'Handler', 'GameCamera', 'Sou
 		handler = new Handler(_this);
 		display = new Display(title, width, height);
 		keyManager = new KeyManager();
+		mouseManager = new MouseManager(handler);
 		g = display.getGraphics();
 		// gameCamera = new GameCamera(handler, 0, 0);
 		gameState = new GameState(handler);
@@ -78,7 +80,8 @@ define(['Class', 'Display', 'State', 'KeyManager', 'Handler', 'GameCamera', 'Sou
 	}
 
 	function tick(_dt) {
-		keyManager.tick();
+		// keyManager.tick();
+		// mouseManager.tick();
 		if(State.getState() !== null){
 			State.getState().tick(_dt);
 		}

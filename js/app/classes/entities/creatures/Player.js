@@ -1,21 +1,50 @@
-define(['Creature', 'Assets', 'HealthBar', 'Rectangle'], function(Creature, Assets, HealthBar, Rectangle){
+define(['Creature', 'Assets', 'HealthBar', 'Rectangle', 'Moving', 'Attacking', 'Dying', 'Spawning'],
+	function(Creature, Assets, HealthBar, Rectangle, Moving, Attacking, Dying, Spawning){
 
-	var lastAnimation = "walk_down";//, attackCounter = 0, lastAttackCounter = 0;
+	var DAMAGE = 70;
+	var healthbar_properties = {
+		color: "#0c0",
+		bgColor: "#a00",
+		yOffset: 20,
+		nodes: 100,
+		split: 0,
+		width: 50,
+		height: 8,
+		fadeTime: 0,
+		renderOnFull: "on",
+		border: {
+			show: true,
+			color: "#000",
+			width: 2
+		}
+	};
 
 	var Player = Creature.extend({
 		init: function(_handler, _x, _y){
 			this._super(_handler, _x, _y, 65, 81);
 			this.assets = Assets.getAssets('luka');
+			this.level = 1;
+			// this.level = 999;
 			this.x = _x;
 			this.y = _y;
-			this.speed = 175;
+			this.speed = 280;
+			// this.speed = 2000;
 			this.bounds.x = 0;
 			this.bounds.y = 0;
 			this.bounds.width = this.width;
 			this.bounds.height = this.height;
 			this.type = 'player';
-			this.damage = 60;
-			this.attacking = false;
+			this.states = {
+				moving: new Moving(this, _handler),
+				attacking: new Attacking(this, _handler),
+				dying: new Dying(this, _handler),
+				spawning: new Spawning(this, _handler),
+			}
+			this.state = this.states.spawning;
+			this.health = this.level * 50;
+			this.damage = this.level * DAMAGE;
+
+			this.healthbar = new HealthBar(_handler, this, healthbar_properties);
 
 			// this.score = 0;
 			// this.weapon = Assets.getAssets('sword');
@@ -55,137 +84,75 @@ define(['Creature', 'Assets', 'HealthBar', 'Rectangle'], function(Creature, Asse
 			// this.healthbar = new HealthBar(_handler, this, healthbar_properties);
 		},
 		tick: function(_dt){
-			// if (!this.handler.getWorld().getRoundOver()) {
-				// this.getInput(_dt);
-
-				if (!this.attacking) {
-					this.xMove = this.speed * _dt;
-					this.move();
-				}
-				// this.handler.getGameCamera().centerOnEntity(this);
-				// if (this.yMove < 0)
-					// this.assets.animations.walk_up.tick();
-				// if (this.yMove > 0)
-					// this.assets.animations.walk_down.tick();
-				// if (this.xMove > 0)
-					// this.assets.animations.walk_right.tick();
-				// if (this.xMove < 0)
-					// this.assets.animations.walk_left.tick();
-				// this.assets.animations.idle.tick();
-				// if (this.health <= 0)
-					// this.assets.animations.death.tick();
-			// }
+			if (this.x > 1200) {
+				return;
+			}
+			this.state.tick(_dt);
+			this.healthbar.update();
 		},
 		render: function(_g){
-			//DRAW SWORD BEFORE PLAYER IF WALKING UP OR LEFT
-			// if (lastAnimation === 'walk_up'){
-			// 	this.weapon.bounds.x = -6;
-			// 	this.weapon.bounds.y = -32;
-			// 	this.weapon.bounds.width = 25;
-			// 	this.weapon.bounds.height = 50;
-			// 	_g.myDrawImage(this.weapon.walk_up, this.x - this.handler.getGameCamera().getxOffset() - 9, this.y - this.handler.getGameCamera().getyOffset() - 33, 32, 64);
-			// }
-			// if (lastAnimation === 'walk_left'){
-			// 	this.weapon.bounds.x = -37;
-			// 	this.weapon.bounds.y = 15;
-			// 	this.weapon.bounds.width = 50;
-			// 	this.weapon.bounds.height = 25;
-			// 	_g.myDrawImage(this.weapon.walk_left, this.x - this.handler.getGameCamera().getxOffset() - 40, this.y - this.handler.getGameCamera().getyOffset() + 11, 64, 32);
-			// }
+			this.state.render(_g);
+			this.healthbar.render(_g);
 
-			//Draw PLAYER
-			_g.myDrawImage(this.assets.model, this.x, this.y, this.assets.width, this.assets.height);
+			_g.drawText({
+				border: true,
+				borderHeight: 80,
+				borderColor: 'black',
+				fillColor: 'white',
+				text: `Level: ${this.level}`,
+				fontSize: 48,
+				font: 'serif',
+				x: function() {return 160},
+				y: function(){return 240}
+			});
 
-			//DRAW SWORD AFTER PLAYER IF WALKING DOWN OR RIGHT
-			// if (lastAnimation === 'walk_down'){
-			// 	this.weapon.bounds.x = -5;
-			// 	this.weapon.bounds.y = 35;
-			// 	this.weapon.bounds.width = 25;
-			// 	this.weapon.bounds.height = 50;
-			// 	_g.myDrawImage(this.weapon.walk_down, this.x - this.handler.getGameCamera().getxOffset() - 9, this.y - this.handler.getGameCamera().getyOffset() + 25, 32, 64);
-			// }
-			// if (lastAnimation === 'walk_right'){
-			// 	this.weapon.bounds.x = 19;
-			// 	this.weapon.bounds.y = 15;
-			// 	this.weapon.bounds.width = 50;
-			// 	this.weapon.bounds.height = 25;
-			// 	_g.myDrawImage(this.weapon.walk_right, this.x - this.handler.getGameCamera().getxOffset() + 7, this.y - this.handler.getGameCamera().getyOffset() + 11, 64, 32);
-			// }
+			_g.fillStyle = 'white';
+			_g.fillRect(390, 180, 400, 100);
 
-			// if (this.attacking){
-			// 	attackCounter++;
-			// 	console.log("increment");
-			// 	if (attackCounter >= 15){
-			// 		console.log("resetting attack counter and lastAttackCounter");
-			// 		attackCounter = 0;
-			// 		lastAttackCounter = 0;
-			// 		this.attacking = false;
-			// 	}
-			// }
+			_g.drawText({
+				border: true,
+				borderHeight: 80,
+				borderColor: 'black',
+				fillColor: 'black',
+				text: `Level Up Click Me!`,
+				fontSize: 48,
+				font: 'serif',
+				x: function() {return 400},
+				y: function(){return 240}
+			});
 
-			// lastAttackCounter++;
-
-			// ****** DRAW BOUNDING BOX DON'T DELETE!!
-			// _g.fillStyle = "red";
-			// _g.fillRect(this.bounds.x + this.x, this.bounds.y + this.y, this.bounds.width, this.bounds.height);
-			// ****** DRAW BOUNDING BOX DON'T DELETE!!
-
-			// ****** DRAW WEAPON BOUNDING BOX DON'T DELETE!!
-			// _g.fillStyle = "green";
-			// _g.fillRect(this.weapon.bounds.x + this.x - this.handler.getGameCamera().getxOffset(), this.weapon.bounds.y + this.y - this.handler.getGameCamera().getyOffset(), this.weapon.bounds.width, this.weapon.bounds.height);
-			// ****** DRAW BOUNDING BOX DON'T DELETE!!
+			// this.drawDebug(_g);
 		},
-		// getInput: function(_dt){
-			// this.xMove = 0;
-			// this.yMove = 0;
-			// if((this.handler.getKeyManager().f || this.handler.getKeyManager().j) && lastAttackCounter > 30){
-			// 	this.attacking = true;
-			// }
-			// if(this.handler.getKeyManager().space){
-			// 	console.log("SPACE: JUMP!!");
-			// }
-			// if(this.handler.getKeyManager().up || this.handler.getKeyManager().upArrow) {
-			// 	this.yMove = -this.speed * _dt;
-			// }
-			// if (this.handler.getKeyManager().down || this.handler.getKeyManager().downArrow) {
-			// 	this.yMove = this.speed * _dt;
-			// }
-			// if(this.handler.getKeyManager().left || this.handler.getKeyManager().leftArrow) {
-			// 	this.xMove = -this.speed * _dt;
-			// }
-			// if (this.handler.getKeyManager().right || this.handler.getKeyManager().rightArrow) {
-			// 	this.xMove = this.speed * _dt;
-			// }
-		// },
-		// getCurrentAnimationFrame: function(){
-		// 	// if (this.health <= 0){
-		// 	// 	return this.assets.animations.death.getCurrentFrame();
-		// 	// }
-		// 	if (this.yMove < 0){
-		// 			lastAnimation = "walk_up";
-		// 			return this.assets.animations.walk_up.getCurrentFrame();
-		// 	} else if (this.yMove > 0){
-		// 			lastAnimation = "walk_down";
-		// 			return this.assets.animations.walk_down.getCurrentFrame();
-		// 	} else if (this.xMove < 0){
-		// 			lastAnimation = "walk_left";
-		// 			return this.assets.animations.walk_left.getCurrentFrame();
-		// 	} else if (this.xMove > 0){
-		// 			lastAnimation = "walk_right";
-		// 			return this.assets.animations.walk_right.getCurrentFrame();
-		// 	} else {
-		// 			return this.assets.animations[lastAnimation].getCurrentFrame();
-		// 	}
-		// },
-		// getHealthBar: function() {
-		// 	return this.healthbar;
-		// },
-		// getWeaponCollisionBounds: function(xOffset, yOffset){
-		// 	return new Rectangle(this.weapon.bounds.x + this.x - this.handler.getGameCamera().getxOffset(),
-		// 												this.weapon.bounds.y + this.y - this.handler.getGameCamera().getyOffset(),
-		// 												this.weapon.bounds.width, this.weapon.bounds.height);
-
-		// },
+		drawDebug: function(_g) {
+			_g.drawText({
+				border: true,
+				borderHeight: 80,
+				borderColor: 'black',
+				fillColor: 'red',
+				text: `Health: ${this.health}`,
+				fontSize: 48,
+				font: 'serif',
+				x: function() {return 160},
+				y: function(){return 340}
+			});
+			_g.drawText({
+				border: true,
+				borderHeight: 80,
+				borderColor: 'black',
+				fillColor: 'red',
+				text: `Dmg: ${this.damage}`,
+				fontSize: 48,
+				font: 'serif',
+				x: function() {return 160},
+				y: function(){return 380}
+			});
+		},
+		levelUp: function() {
+			this.level++;
+			this.health = this.level * 50;
+			this.damage = this.level * DAMAGE;
+			this.healthbar.setProperties(healthbar_properties, this);
+		}
 	});
 
 	return Player;

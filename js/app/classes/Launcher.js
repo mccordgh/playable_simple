@@ -1,5 +1,3 @@
-console.log('launcher');
-
 define(['Class','Game'], function(Class,Game){
 
 	var Launcher = Class.extend({

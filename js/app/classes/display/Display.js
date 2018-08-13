@@ -28,7 +28,6 @@ define(['Jquery', 'Class', 'Assets'],function($, Class, Assets){
 		myCanvas = document.getElementById("canvas");
 		myCanvas.setAttribute("width", width);
 		myCanvas.setAttribute("height", height);
-		console.log(width, height);
 		graphics = myCanvas.getContext("2d");
 	}
 
